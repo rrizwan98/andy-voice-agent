@@ -233,11 +233,12 @@ async def openai_webhook(request: Request) -> Response:
     body = await request.body()
     try:
         event = openai_client.webhooks.unwrap(body, request.headers)
-    except InvalidWebhookSignatureError as exc:
+    except (InvalidWebhookSignatureError, ValueError) as exc:
         raise HTTPException(status_code=400, detail="Invalid webhook signature") from exc
 
     if event.type == "realtime.call.incoming":
-        call_id = event.data.call_id
+        call_id = getattr(event.data, "id", None) or getattr(event.data, "call_id", None)
+        logger.info("Incoming call event — call_id: %s | data: %s", call_id, event.data)
         await accept_call(call_id)
         _track_call_task(call_id)
 
