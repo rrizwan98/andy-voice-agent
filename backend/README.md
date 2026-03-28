@@ -1,20 +1,15 @@
 ---
-title: Andy Voice Agent Backend
-emoji: 🤖
-colorFrom: indigo
+title: Andy Voice Agent
+emoji: 📞
+colorFrom: green
 colorTo: blue
 sdk: docker
-pinned: false
 app_port: 7860
+pinned: false
 ---
 
 # Andy Voice Agent — Backend
 
-FastAPI backend for Andy Voice Agent powered by OpenAI Realtime API.
+FastAPI backend for Andy, the AI voice employee.
 
-## Endpoints
-
-- `POST /api/call` — Initiate outbound Twilio call
-- `GET/POST /twiml` — TwiML for call routing
-- `POST /openai/webhook` — OpenAI realtime webhook
-- `GET /health` — Health check
+Built with OpenAI Agents SDK + Twilio SIP Trunk.
