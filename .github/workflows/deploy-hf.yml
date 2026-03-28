@@ -33,4 +33,4 @@ jobs:
           git commit -m "sync: backend from github@${{ github.sha }}"
 
           # Force push to HF Space (overwrite history)
-          git push --force https://user:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
+          git push --force https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
