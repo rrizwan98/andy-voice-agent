@@ -1,0 +1,33 @@
+name: Deploy Backend to test_voice_agent
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-test.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Push backend to HF test_voice_agent
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "andy@ai-employee.com"
+          git config --global user.name "Andy AI"
+
+          mkdir /tmp/hf-test
+          cp -r backend/. /tmp/hf-test/
+
+          cd /tmp/hf-test
+          git init
+          git checkout -b main
+          git add -A
+          git commit -m "sync: backend from github@${{ github.sha }}"
+
+          git push --force https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/test_voice_agent main
