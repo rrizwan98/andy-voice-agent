@@ -244,14 +244,11 @@ async def openai_webhook(request: Request) -> Response:
     return Response(status_code=200)
 
 
+@app.get("/")
+async def root() -> dict:
+    return {"name": "Andy Voice Agent API", "docs": "/docs", "health": "/health"}
+
+
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok"}
-
-
-# ---------------------------------------------------------------------------
-# Serve Next.js static frontend (catch-all — MUST be last)
-# ---------------------------------------------------------------------------
-
-if os.path.exists("static"):
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
