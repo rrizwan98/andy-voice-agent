@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Push backend to HuggingFace Space
         env:
@@ -24,17 +22,15 @@ jobs:
           git config --global user.email "andy@ai-employee.com"
           git config --global user.name "Andy AI"
 
-          # Clone HF Space
-          git clone https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent /tmp/hf-space
+          # Create fresh repo from backend folder
+          mkdir /tmp/hf-space
+          cp -r backend/. /tmp/hf-space/
 
-          # Sync backend folder into HF Space root (overwrite)
-          rsync -av --delete \
-            --exclude='.git' \
-            backend/ /tmp/hf-space/
-
-          # Commit and push
           cd /tmp/hf-space
+          git init
+          git checkout -b main
           git add -A
-          git diff --cached --quiet && echo "No changes to deploy" && exit 0
           git commit -m "sync: backend from github@${{ github.sha }}"
-          git push https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
+
+          # Force push to HF Space (overwrite history)
+          git push --force https://user:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
