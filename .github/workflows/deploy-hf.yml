@@ -25,7 +25,7 @@ jobs:
           git config --global user.name "Andy AI"
 
           # Clone HF Space
-          git clone https://user:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent /tmp/hf-space
+          git clone https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent /tmp/hf-space
 
           # Sync backend folder into HF Space root (overwrite)
           rsync -av --delete \
@@ -37,4 +37,4 @@ jobs:
           git add -A
           git diff --cached --quiet && echo "No changes to deploy" && exit 0
           git commit -m "sync: backend from github@${{ github.sha }}"
-          git push https://user:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
+          git push https://rrizwan98:${HF_TOKEN}@huggingface.co/spaces/rrizwan98/openai_first_voice_agent main
