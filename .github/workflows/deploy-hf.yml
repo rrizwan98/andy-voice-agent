@@ -1,0 +1,27 @@
+name: Deploy Backend to HuggingFace Spaces
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-hf.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push backend to HuggingFace Space
+        uses: JacobLinCool/huggingface-sync@v1
+        with:
+          github: ${{ secrets.GITHUB_TOKEN }}
+          huggingface: ${{ secrets.HF_TOKEN }}
+          space: rrizwan98/openai_first_voice_agent
+          path: backend
