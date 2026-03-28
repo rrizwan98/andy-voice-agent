@@ -17,6 +17,7 @@ from functools import partial
 
 import websockets
 from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from openai import APIStatusError, AsyncOpenAI, InvalidWebhookSignatureError
 from pydantic import BaseModel
@@ -61,6 +62,13 @@ twilio_client = TwilioClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 andy = get_starting_agent()
 
 app = FastAPI(title="Andy Voice Agent")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Track active call tasks to avoid duplicate observers
 active_call_tasks: dict[str, asyncio.Task[None]] = {}
